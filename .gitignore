@@ -1,3 +1,7 @@
+# projectUseless
+*.cmd
+files/
+
 # Logs
 logs
 *.log
