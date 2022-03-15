@@ -10,7 +10,7 @@ block content
     li
       a(href='/recall/api2') API2 update JSON
   
-  form(method='POST' action='')
+  form(method='GET' action='')
     div.form-group
       label(for='category') JSON file:
       input#name.form-control(type='text', name='category' value=(undefined===recall ? '' : recall.category), required='true')

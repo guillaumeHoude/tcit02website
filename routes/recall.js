@@ -1,5 +1,9 @@
 const express = require('express')
 const router = express.Router()
+const multer = require('multer')
+
+const storage = multer.memoryStorage()
+const upload = multer({ storage: storage })
 
 // Require controller modules.
 const recall_controller = require('../controllers/recallController')
@@ -23,13 +27,10 @@ router.get('/api2', api2_controller.index)
 router.get('/api2/all', api2_controller.api2_get_all) // returns json file
 
 // POST send a JSON file to the API
-router.post('/api2/all', api2_controller.api2_post_json) 
+router.post('/api2', upload.single('file'), api2_controller.api2_post_json) 
 
 // GET page to search category
 router.get('/api2/category', api2_controller.api2_category) // returns json file where category match in either fr or en
-
-// GET all record of category
-router.get('/api2/category/:category', api2_controller.api2_category_search) // returns json file where category match in either fr or en
 
 /// API3 ROUTES ///
 

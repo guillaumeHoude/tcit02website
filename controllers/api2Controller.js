@@ -1,6 +1,8 @@
 const axios = require('axios').default;
-const https = require("https")
-const http = require("http")
+const https = require('https')
+const http = require('http')
+const FormData = require('form-data')
+const fs = require('fs');
 //const async = require('async')
 
 
@@ -10,7 +12,6 @@ axios.defaults.httpsAgent = https.Agent({rejectUnauthorized: false}) //otherwise
 //in a bigger project I'd define this elsewhere
 const api2All = 'http://localhost:3002/api2/all'
 const api2Category = 'http://localhost:3002/api2/category/'
-
 
 //let Recall = require('../models/api2')
 
@@ -34,12 +35,45 @@ exports.api2_get_all = function (req, res) {
 
 // POST send a JSON file to the API
 exports.api2_post_json = function (req, res) {
-    res.send('NOT IMPLEMENTED: Recall detail: ')
+  let formData = new FormData()
+  formData.append('file', req.file.buffer, { filename : 'input.json' });
+  
+  axios.post(api2All, formData, { headers:  formData.getHeaders() })
+  .then(response => {
+    // axios' response object: { data, status, statusText, headers, config and request }
+    res.json(response.data)
+  }).catch(error => {
+    console.error(error.message)
+    console.error(error.stack)
+    res.send(error)
+  })
+  //res.send(`Request object: ${JSON.stringify(req.file)}`)
 }
 
-// GET page to search category
+// GET page to search category/
 exports.api2_category = function (req, res) {
-    res.render('api2_category', { title: 'Recall API2'})
+  //req.body.category
+  //req.params.category
+  if(req.query.category) {
+    axios.get(api2Category+req.query.category)
+      .then(response => {
+      res.json(response.data)
+    }).catch(error => {
+      if(error.response){
+        console.error(`error.response.status`)
+        console.error(`error.response.data`)
+        console.error(`error.response.data`)
+      }
+      console.error(error.message)
+      console.error(error.stack)
+      res.send(error)
+    })
+  }else{
+    res.render('api2_category', { title: `Recall API2 ${ JSON.stringify(req.query) }`})
+  }
+  // TODO
+  
+  
 }
 
 // GET all record of category
