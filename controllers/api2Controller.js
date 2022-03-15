@@ -1,10 +1,57 @@
-// We could also include the next function to be called if the method does not complete the request cycle
-const async = require('async')
-let Recall = require('../models/api2')
-// let utils = require('../helpers/helpers') // readfile
+const axios = require('axios').default;
+const https = require("https")
+const http = require("http")
+//const async = require('async')
 
+
+/// initializations ///
+axios.defaults.httpsAgent = https.Agent({rejectUnauthorized: false}) //otherwise the data.tc.gc.ca/ returns a cert issue (https://github.com/axios/axios/issues/535)
+
+//in a bigger project I'd define this elsewhere
+const api2All = 'http://localhost:3002/api2/all'
+const api2Category = 'http://localhost:3002/api2/category/'
+
+
+//let Recall = require('../models/api2')
+
+// GET main page
 exports.index = function (req, res) {
     res.render('api2', { title: 'Recall API2'})
+}
+
+// GET all record from the API
+exports.api2_get_all = function (req, res) {
+  axios.get(api2All)
+  .then(response => {
+    // response object has 3 variables: statusCode, headers and body. We usually only want to show the body
+    res.json(response.data)
+  }).catch(error => {
+    console.error(error.message)
+    console.error(error.stack)
+    res.send(error)
+  })
+}
+
+// POST send a JSON file to the API
+exports.api2_post_json = function (req, res) {
+    res.send('NOT IMPLEMENTED: Recall detail: ')
+}
+
+// GET page to search category
+exports.api2_category = function (req, res) {
+    res.render('api2_category', { title: 'Recall API2'})
+}
+
+// GET all record of category
+exports.api2_category_search = function (req, res) {
+  axios.get(api2Category+req.params.category)
+  .then(response => {
+    res.json(response.data)
+  }).catch(error => {
+    console.error(error.message)
+    console.error(error.stack)
+    res.send(error)
+  })
 }
 
 // Display list of all recalls.
@@ -18,65 +65,3 @@ exports.index = function (req, res) {
 	//res.sendfile(fileLocation, (err) => {err ? next(err) : console.log('Sent:', fileLocation)}) // file as is
 }
 */
-// Display detail page for a specific recall.
-exports.api2_recall_category_search = function (req, res) { // returns json file with category matching entries
-    res.send('NOT IMPLEMENTED: Recall list category search: ' + req.params.category)
-}
-
-// Display detail page for a specific recall.
-exports.api2_recall_detail = function (req, res) { // returns 1 entry where the recall number is the same
-    res.send('NOT IMPLEMENTED: Recall detail: ' + req.params.id)
-}
-
-// Display recall update form on GET.
-exports.api2_recall_update_get = function (req, res) {
-    res.send('NOT IMPLEMENTED: Recall update GET')
-}
-
-// Handle recall update on POST.
-exports.api2_recall_update_post = function (req, res) {
-    res.send('NOT IMPLEMENTED: Recall update POST')
-}
-
-/// CONTACTING API2 ///
-const https = require("https")
-const http = require("http")
-
-exports.api2_all = function (req, result) {
-  let url = 'http://localhost:3002/api2/all'
-  
-  let request = http.get(url, (res) => {
-		console.log(`statusCode: ${res.statusCode}`)
-		
-		if (res.statusCode !== 200) {
-			console.error(`Did not get an OK from the server. Code: ${res.statusCode} Result: ${res.statusMessage}`);
-			res.resume();
-			return;
-		}
-		
-		let data = '';
-
-		//on data event, append datachunk
-		res.on('data', (chunk) => {
-			console.log('data in');
-			data += chunk;
-		});
-
-    res.on('end', () => {
-			console.log('end');
-		});
-    
-		//when everything is sent, convert data to JSON
-		res.on('close', () => {
-			console.log('close: Retrieved all data');
-			//console.log(JSON.parse(data)); //This will return json object, if we want to read it //JSON.stringify() or leave as data
-			result.json(JSON.parse(data))
-		});
-	});
-
-	request.on('error', (err) => {
-		console.error(`Encountered an error trying to make a request: ${err.message}`);
-	});
-	
-	request.end();
-}

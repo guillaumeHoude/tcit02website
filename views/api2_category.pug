@@ -8,12 +8,12 @@ block content
     li
       a(href='/recall/api2/all') API2 get full JSON
     li
-      a(href='/recall/api2/category') API2 search category
+      a(href='/recall/api2') API2 update JSON
   
   form(method='POST' action='')
     div.form-group
-      label(for='file') JSON file:
-      input#name.form-control(type='file', name='file' value=(undefined===jsonfile ? '' : jsonfile.file), required='true')
+      label(for='category') JSON file:
+      input#name.form-control(type='text', name='category' value=(undefined===recall ? '' : recall.category), required='true')
     button.btn.btn-primary(type='submit') Submit
 
   if errors

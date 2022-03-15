@@ -16,23 +16,20 @@ router.get('/', recall_controller.index)
 /// API1 ROUTES ///
 
 /// API2 ROUTES ///
-// GET request to update Recall.
+// GET main page
 router.get('/api2', api2_controller.index)
 
-// GET request to update Recall.
-router.get('/api2/:id/update', api2_controller.api2_recall_update_get)
+// GET all record from the API
+router.get('/api2/all', api2_controller.api2_get_all) // returns json file
 
-// POST request to update Recall.
-router.post('/api2/recall-number/:id/update', api2_controller.api2_recall_update_post)
+// POST send a JSON file to the API
+router.post('/api2/all', api2_controller.api2_post_json) 
 
-// GET request for one Recall.
-router.get('/api2/recall-number/:id', api2_controller.api2_recall_detail) // returns 1 entry base on recall number
+// GET page to search category
+router.get('/api2/category', api2_controller.api2_category) // returns json file where category match in either fr or en
 
-// GET request for one Recall.
-router.get('/api2/category/:category', api2_controller.api2_recall_category_search) // returns json file where category match in either fr or en
-
-// GET request for list of all Recall items.
-router.get('/api2/all', api2_controller.api2_all) // returns json file
+// GET all record of category
+router.get('/api2/category/:category', api2_controller.api2_category_search) // returns json file where category match in either fr or en
 
 /// API3 ROUTES ///
 
