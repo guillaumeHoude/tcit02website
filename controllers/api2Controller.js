@@ -43,13 +43,13 @@ const https = require("https")
 const http = require("http")
 
 exports.api2_all = function (req, result) {
-  let url = 'http://localhost:8000'
+  let url = 'http://localhost:3002/api2/all'
   
   let request = http.get(url, (res) => {
 		console.log(`statusCode: ${res.statusCode}`)
 		
 		if (res.statusCode !== 200) {
-			console.error(`Did not get an OK from the server. Code: ${res.statusCode} Result: ${res}`);
+			console.error(`Did not get an OK from the server. Code: ${res.statusCode} Result: ${res.statusMessage}`);
 			res.resume();
 			return;
 		}

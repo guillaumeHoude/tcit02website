@@ -11,3 +11,14 @@ block content
       a(href='/recall/api2/recall-number') API2 get single
     li
       a(href='/recall/api2/category') API2 search category
+  
+  form(method='POST' action='')
+    div.form-group
+      label(for='file') JSON file:
+      input#name.form-control(type='file', name='file' value=(undefined===jsonfile ? '' : jsonfile.file), required='true')
+    button.btn.btn-primary(type='submit') Submit
+
+  if errors
+   ul
+    for error in errors
+     li!= error.msg
