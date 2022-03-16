@@ -24,13 +24,13 @@ router.get('/', recall_controller.index)
 router.get('/api2', api2_controller.index)
 
 // GET all record from the API
-router.get('/api2/all', api2_controller.api2_get_all) // returns json file
+router.get('/api2/all', api2_controller.api2_get_recalls) 
 
 // POST send a JSON file to the API
 router.post('/api2', upload.single('file'), api2_controller.api2_post_json) 
 
 // GET page to search category
-router.get('/api2/category', api2_controller.api2_category) // returns json file where category match in either fr or en
+router.get('/api2/category', api2_controller.api2_category) 
 
 /// API3 ROUTES ///
 
