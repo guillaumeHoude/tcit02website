@@ -17,5 +17,10 @@ Built for the hiring process for TransportCanada IT-02 Process \# 20-MOT-EA-HRS-
 5. Website server is active, leave the terminal open to let it run
 6. You can access the website from the same computer by going to [http://localhost:3001/](http://localhost:3001/) if you're on the same machine or by going to \[serverIp\]:3001 if you're accessing from another machine
 
+## How to deploy API1
+- View API1 documentation on [github](https://github.com/muntasir2165/manufacturer-recall-number-api)
+
+## How to deploy API2
+- View API2 documentation on [github](https://github.com/guillaumeHoude/tcit02api2)
 
 Written by @Guillaume_Houde
