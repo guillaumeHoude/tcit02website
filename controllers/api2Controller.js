@@ -19,12 +19,14 @@ exports.index = function (req, res) {
 exports.api2_get_recalls = function (req, res) {
   axios.get(api2Url)
   .then(response => {
-    // response object has 3 variables: statusCode, headers and body. We usually only want to show the body
-    res.json(response.data)
+    res.status(response.status).json(response.data)
   }).catch(error => {
-    console.error(error.message)
-    console.error(error.stack)
-    res.send(error)
+    if (error.response){
+      res.status(error.response.status).send(error.message)
+      console.error(error.response.data)
+    }else{
+      res.send(error.message)
+    }
   })
 }
 
@@ -36,13 +38,15 @@ exports.api2_post_json = function (req, res) {
   axios.post(api2Url, formData, { headers:  formData.getHeaders() })
   .then(response => {
     // axios' response object: { data, status, statusText, headers, config and request }
-    res.json(response.data)
+    res.status(response.status).json(response.data)
   }).catch(error => {
-    console.error(error.message)
-    console.error(error.stack)
-    res.send(error)
+    if (error.response){
+      res.status(error.response.status).send(error.message)
+      console.error(error.response.data)
+    }else{
+      res.send(error.message)
+    }
   })
-  //res.send(`Request object: ${JSON.stringify(req.file)}`)
 }
 
 // GET page to search category/
@@ -52,16 +56,14 @@ exports.api2_category = function (req, res) {
   if(req.query.category) {
     axios.get(api2Url+'?category='+req.query.category)
       .then(response => {
-      res.json(response.data)
+      res.status(response.status).json(response.data)
     }).catch(error => {
-      if(error.response){
-        console.error(`error.response.status`)
-        console.error(`error.response.data`)
-        console.error(`error.response.data`)
-      }
-      console.error(error.message)
-      console.error(error.stack)
-      res.send(error)
+      if (error.response){
+      res.status(error.response.status).send(error.message)
+      console.error(error.response.data)
+    }else{
+      res.send(error.message)
+    }
     })
   }else{
     res.render('api2_category', { title: `Recall API2 ${ JSON.stringify(req.query) }`})
